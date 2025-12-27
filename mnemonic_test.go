@@ -13,13 +13,13 @@ import (
 
 func TestMnemonicChecksum(t *testing.T) {
 	// Ensure a word list is correct https://raw.githubusercontent.com/bitcoin/bips/master/bip-0039/english.txt
-	checksum := crc32.ChecksumIEEE([]byte(strings.Join(prkg.DictionaryEnglish.Words(), "\n")))
+	checksum := crc32.ChecksumIEEE([]byte(strings.Join(prkg.DictEnglish.Words(), "\n")))
 	assert.Equal(t, uint32(0xb5a54d12), checksum)
 }
 
 func TestEntropyFromMnemonic(t *testing.T) {
 	entropy, _ := hex.DecodeString("67776fe4e70fe34fbf9f1432546ff0f3d5e4b9d8")
-	words, err := prkg.DictionaryEnglish.Mnemonic(entropy)
+	words, err := prkg.DictEnglish.Mnemonic(entropy)
 	assert.NoError(t, err)
 	assert.Equal(t, words, []string{
 		"guess", "rocket", "weird", "sock", "wreck", "pond",
@@ -29,7 +29,7 @@ func TestEntropyFromMnemonic(t *testing.T) {
 }
 
 func TestUniqueFirstFour(t *testing.T) {
-	words := prkg.DictionaryEnglish.Words()
+	words := prkg.DictEnglish.Words()
 
 	var groups3 = make([]string, 0, len(words))
 	var groups4 = make(map[string]int, len(words))
@@ -64,7 +64,7 @@ func TestUniqueFirstFour(t *testing.T) {
 }
 
 func TestDictionaryUnique(t *testing.T) {
-	words := prkg.DictionaryEnglish.Words()
+	words := prkg.DictEnglish.Words()
 	var uniqueWords = make(map[string]bool, len(words))
 
 	for idx, word := range words {
@@ -82,17 +82,17 @@ func TestSeed(t *testing.T) {
 
 	expectedSeed, _ := hex.DecodeString("be9ac19cea2f3552e16b1391db6a1b4f057a53cfe6831734" +
 		"b96e9c85739697fd5b7abe63f16eafa093af4c26eed99198c722c362b743f24fcbf8dbbd198d903e")
-	seed, err := prkg.DictionaryEnglish.Seed(mnemonic, "")
+	seed, err := prkg.DictEnglish.Seed(mnemonic, "")
 	assert.NoError(t, err)
 	assert.Equal(t, [64]byte(expectedSeed), seed)
 
 	expectedSeed, _ = hex.DecodeString("f02d1f7b01c9142a1226d87f52dd15010aadcbe96257eded4" +
 		"396e64c7d86d7ecc07820e635fab3e17c3f3afdf975b36e8acfee8d0ebfe1b4f6ee28f0da39575b")
-	seed, err = prkg.DictionaryEnglish.Seed(mnemonic, "secret")
+	seed, err = prkg.DictEnglish.Seed(mnemonic, "secret")
 	assert.NoError(t, err)
 	assert.Equal(t, [64]byte(expectedSeed), seed)
 
-	seed, err = prkg.DictionaryEnglish.Seed(mnemonic[1:], "")
+	seed, err = prkg.DictEnglish.Seed(mnemonic[1:], "")
 	assert.Error(t, err)
 	assert.Equal(t, [64]byte{}, seed)
 

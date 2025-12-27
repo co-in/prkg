@@ -20,6 +20,57 @@ distinct to avoid collisions and deception, but key generation is not tied to it
 - Child keys cannot be created autonomously from extended
 
 ### Plans:
-
 - Add split mnemonics to cards
 - Add comments, tests, usage examples
+
+### Example:
+
+```go
+package main
+
+import (
+  "fmt"
+
+  "github.com/co-in/prkg"
+)
+
+func main() {
+  entropy, err := prkg.NewEntropy(prkg.Mnemonic24)
+  if err != nil {
+    panic(err)
+  }
+  fmt.Printf("Entropy: %0X\n", entropy)
+
+  mnemonic, err := prkg.DictEnglish.Mnemonic(entropy)
+  if err != nil {
+    panic(err)
+  }
+  fmt.Println("Mnemonic:", mnemonic)
+
+  seed, err := prkg.DictEnglish.Seed(mnemonic, "additional-passphrase")
+  if err != nil {
+    panic(err)
+  }
+  fmt.Printf("Seed: %0X\n", seed)
+
+  dk, err := prkg.NewDK(seed, prkg.WithDKKeyEntropySize(32))
+  if err != nil {
+    panic(err)
+  }
+
+  var key []byte
+
+  for i := uint32(0); i < 3; i++ {
+    for j := uint32(0); j < 2; j++ {
+      p := prkg.NewPath(50, j, 0, i)
+
+      key, err = dk.Jump(p[:]...)
+      if err != nil {
+        panic(err)
+      }
+
+      fmt.Printf("%s: %0X\n", p.String(), key)
+    }
+  }
+}
+```
