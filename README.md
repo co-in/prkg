@@ -25,6 +25,7 @@ distinct to avoid collisions and deception, but key generation is not tied to it
 
 ### Example:
 
+https://go.dev/play/p/FnXktrpbsMg
 ```go
 package main
 
