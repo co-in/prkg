@@ -12,7 +12,7 @@ test:
 		fi; \
 		cd $(WORKDIR); \
 		cd $$mod; \
-		go test .; \
+		go test ./...; \
 	done)
 
 tidy:
