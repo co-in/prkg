@@ -2,6 +2,7 @@ package prkg
 
 import (
 	"crypto/rand"
+	"errors"
 	"math/big"
 )
 
@@ -45,6 +46,19 @@ type entropyConfig struct {
 	mask  *big.Int
 	shift *big.Int
 	bytes int
+}
+
+func (m entropyConfig) Size() int {
+	return (m.bytes * 264) / (352)
+}
+
+func EntropyFromSize(wordLength int) ([]byte, error) {
+	cfg, ok := wordLengthMapping[wordLength]
+	if !ok {
+		return nil, errors.New("invalid word length")
+	}
+
+	return NewEntropy(cfg)
 }
 
 func NewEntropy(e entropyConfig) ([]byte, error) {
