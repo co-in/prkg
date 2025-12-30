@@ -8,7 +8,7 @@ import (
 )
 
 func TestPath(t *testing.T) {
-	pathStr := "p/1/11/2/3333"
+	pathStr := "x/1/11/2/3333"
 	path := prkg.Path([]uint32{1, 11, 2, 3333})
 
 	assert.Equal(t, path.String(), pathStr)
@@ -16,4 +16,10 @@ func TestPath(t *testing.T) {
 	p, err := prkg.ParsePath(pathStr)
 	assert.NoError(t, err)
 	assert.Equal(t, p, path)
+
+	p.SetIndex(1)
+	assert.Equal(t, p.String(), "x/1/11/2/1")
+
+	p.SetKind(1)
+	assert.Equal(t, p.String(), "x/1/11/1/1")
 }

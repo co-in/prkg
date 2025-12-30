@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-var regexpPath = regexp.MustCompile(`^p/(\d+)/(\d+)/(\d+)/(\d+)$`)
+var regexpPath = regexp.MustCompile(`^x/(\d+)/(\d+)/(\d+)/(\d+)$`)
 
 type Path [4]uint32
 
@@ -46,7 +46,7 @@ func NewPath(coin, wallet, kind, index uint32) Path {
 }
 
 func (m *Path) String() string {
-	return fmt.Sprintf("p/%d/%d/%d/%d", m[0], m[1], m[2], m[3])
+	return fmt.Sprintf("x/%d/%d/%d/%d", m[0], m[1], m[2], m[3])
 }
 
 func (m *Path) SetIndex(value uint32) {
