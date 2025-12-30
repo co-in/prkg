@@ -45,14 +45,14 @@ func NewPath(coin, wallet, kind, index uint32) Path {
 	}
 }
 
-func (m Path) String() string {
+func (m *Path) String() string {
 	return fmt.Sprintf("p/%d/%d/%d/%d", m[0], m[1], m[2], m[3])
 }
 
-func (m Path) SetIndex(value uint32) {
+func (m *Path) SetIndex(value uint32) {
 	m[3] = value
 }
 
-func (m Path) SetKind(value uint32) {
+func (m *Path) SetKind(value uint32) {
 	m[2] = value
 }
